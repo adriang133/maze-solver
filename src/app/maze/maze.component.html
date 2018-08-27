@@ -1,5 +1,20 @@
-<div class="container-fluid">
+<div class="container">
+  <h2>Controls: </h2>
+  <fa-icon icon="arrow-up"></fa-icon> <span>Move forward</span>
+  <fa-icon icon="arrow-left"></fa-icon> <span>Rotate left</span>
+  <fa-icon icon="arrow-right"></fa-icon> <span>Rotate right</span>
+  <fa-icon icon="arrow-down"></fa-icon> <span>Rotate back</span>
+</div>
+<br><br>
+<div class="container">
   <div class="row" *ngFor="let row of maze">
     <app-maze-cell *ngFor="let cell of row" [cellType]="cell"></app-maze-cell>
   </div>
+</div>
+<br>
+<div class="container">
+  <textarea class="form-control" rows="1" readonly>{{mazeSolution}}</textarea>
+  <br>
+  <button [disabled]="solved || playing" type="button" class="btn btn-primary" (click)="updateSolution()">Solve maze</button>
+  <button [disabled]="!solved || playing" type="button" class="btn btn-primary" (click)="playSolution()">Play solution</button>
 </div>
