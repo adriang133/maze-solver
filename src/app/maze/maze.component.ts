@@ -21,9 +21,9 @@ export class MazeComponent implements OnInit {
   mazeString: string[];
 
 
-  private mazeSolution: string[];
-  private solved: boolean;
-  private playing: boolean;
+  public mazeSolution: string[];
+  public solved: boolean;
+  public playing: boolean;
   private playerPos: Point;
   public maze: any[];
 
