@@ -1,7 +1,16 @@
 import React from 'react';
 import Maze from './components/Maze';
+import { Button, Container, Header, Modal, Input } from 'semantic-ui-react';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mazeInput: null
+    }
+
+    this.onChange = this.onChange.bind(this);
+  }
   static demoMaze() {
     const mazeString = [
       '##########',
@@ -47,8 +56,31 @@ class App extends React.Component {
     return maze;
   }
 
+  onChange(event) { 
+    this.setState({
+      mazeInput: this.event.target.value
+    })
+  }
+
+  renderModal() {
+    return (<Modal trigger={<Button>Show Modal</Button>}>
+      <Modal.Header>Load maze</Modal.Header>
+      <Modal.Content>
+        <Modal.Description>
+          <Header>Load your own maze as text</Header>
+          <Input onChange={this.onChange}></Input>
+        </Modal.Description>
+      </Modal.Content>
+    </Modal>);
+  }
+
   render() {
-    return <Maze maze={App.demoMaze()} />;
+    return (
+      <Container>
+        {this.renderModal()}
+        <Maze maze={App.demoMaze()} />;
+      </Container>
+    );
   }
 }
 
