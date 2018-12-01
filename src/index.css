@@ -1,23 +1,44 @@
 .maze-cell {
-  border: 1px solid black;
   width: 50px;
+}
+
+.controls-container {
+  padding-top: 10px;
+  padding-bottom: 30px;
 }
 
 .maze-row {
   display: flex;
+  justify-content: center;
   margin: 0;
   padding: 0;
   height: 50px;
 }
 
+.maze-row > .maze-cell {
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+}
+
 .maze-cell.free {
-  background-color: white;
+  background-color: #f8f9fa;
 }
 
 .maze-cell.wall {
-  background-color: black;
+  background-color: #343a40;
+}
+
+.maze-cell.highlight {
+  background-color: #28a745;
 }
 
 .maze-cell.player {
-  background-color: white;
+  background-color: #f8f9fa;
+  text-align: center;
+  color: #007bff;
+}
+
+.maze-cell.player > i {
+  margin-top: 20%;
+  margin-left: 8%;
 }

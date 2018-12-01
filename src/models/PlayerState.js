@@ -1,10 +1,11 @@
-import { MAZE_CELL, MOVE } from '../constants';
+import { MAZE_CELL, MOVE } from '../Constants';
+import Point from './Point'; // eslint-disable-line no-unused-vars
 
 export default class PlayerState {
   /**
-   * Represents a player state in a maze
+   * Represents a player state
    * @param {Point} location
-   * @param {Direction} direction
+   * @param {String} direction
    */
   constructor(location, direction) {
     this.location = location;
@@ -22,7 +23,7 @@ export default class PlayerState {
       case MAZE_CELL.PLAYER.RIGHT:
         return this.location.right();
       default:
-        return null;
+        throw new Error('Invalid player direction');
     }
   }
 

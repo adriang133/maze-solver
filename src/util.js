@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: off */
-import { MAZE_CELL, MOVE } from './constants';
+import { MAZE_CELL, MOVE } from './Constants';
 import Point from './models/Point';
 import PlayerState from './models/PlayerState';
 
@@ -7,7 +7,7 @@ export default class Util {
   /**
    * Returns true if p is a valid point within the maze boundaries, false otherwise
    * @param {Point} p
-   * @param {Array} maze
+   * @param {Array<Array<string>>} maze
    */
   static isOutOfBounds(p, maze) {
     return p.x < 0 || p.x >= maze.length || p.y < 0 || p.y >= maze[0].length;
@@ -24,6 +24,10 @@ export default class Util {
     a = tmp;
   }
 
+  /**
+   * Deep copies an object by serializing and deserializing it
+   * @param {Object} obj
+   */
   static deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
   }
@@ -31,19 +35,19 @@ export default class Util {
   /**
    * Whether p is free
    * @param {Point} p
-   * @param {Array} maze
+   * @param {Array<Array<string>>} maze
    */
   static isFree(p, maze) {
     if (Util.isOutOfBounds(p, maze)) {
       return false;
     }
-    return maze[p.x][p.y] === MAZE_CELL.FREE;
+    return maze[p.x][p.y] === MAZE_CELL.FREE || maze[p.x][p.y] === MAZE_CELL.PATH;
   }
 
   /**
    * Whether p is a wall or not
    * @param {Point} p
-   * @param {Array} maze
+   * @param {Array<Array<string>>} maze
    */
   static isWall(p, maze) {
     if (Util.isOutOfBounds(p, maze)) {
@@ -55,7 +59,7 @@ export default class Util {
   /**
    * Returns true if p is an exit point in the maze
    * @param {Point} p
-   * @param {Array} maze
+   * @param {Array<Array<string>>} maze
    */
   static isExit(p, maze) {
     if (Util.isOutOfBounds(p, maze)) {
@@ -67,7 +71,7 @@ export default class Util {
   /**
    * Returns true if the current player position is at p
    * @param {Point} p
-   * @param {Array} maze
+   * @param {Array<Array<string>>} maze
    */
   static isPlayer(p, maze) {
     if (Util.isOutOfBounds(p, maze)) {
@@ -78,7 +82,7 @@ export default class Util {
 
   /**
    * Returns the player's state in the maze (PlayerState object)
-   * @param {[][]} maze A two-dimensional array representing the maze
+   * @param {Array<Array<string>>} maze A two-dimensional array representing the maze
    */
   static getPlayerState(maze) {
     for (let i = 0; i < maze.length; i++) {
@@ -93,6 +97,13 @@ export default class Util {
     throw new Error('Invalid maze');
   }
 
+  /**
+   * Returns a new maze with the updated player state
+   * @param {Array<Array<string>>} maze
+   * @param {PlayerState} oldPlayerState
+   * @param {PlayerState} newPlayerState
+   * @returns {Array<Array<string>>} A new maze
+   */
   static mazeWithUpdatedPlayerState(maze, oldPlayerState, newPlayerState) {
     const mazeCopy = Util.deepCopy(maze);
     mazeCopy[oldPlayerState.location.x][oldPlayerState.location.y] = MAZE_CELL.FREE;
@@ -102,8 +113,9 @@ export default class Util {
 
   /**
    * Gets the path to the exit point.
-   * @param maze The solved maze
-   * @param exit The exit point
+   * @param {Array<Array<string>>} maze The solved maze
+   * @param {Point} exit The exit point
+   * @returns {Array<Point>} The path to the exit, as an array of cells
    */
   static getPath(maze, exit) {
     const steps = [p => p.left(), p => p.right(), p => p.up(), p => p.down()];
@@ -127,6 +139,11 @@ export default class Util {
     return path.reverse();
   }
 
+  /**
+   * Gets the readable directions for the path
+   * @param {Array<Point>} path
+   * @param {PlayerState} playerState
+   */
   static pathDirections(path, playerState) {
     const result = [];
     let currentState = playerState;
@@ -141,5 +158,38 @@ export default class Util {
     }
 
     return result;
+  }
+
+  /**
+   * Sets all the cells on a path to a certain value
+   * @param {Array<Array<string>>} maze
+   * @param {Array<Point>} path
+   * @param {String} value A MAZE_CELL value
+   * @returns {Array<Array<string>>} A new maze
+   */
+  static _mazeWithValueOnPath(maze, path, value) {
+    const _maze = Util.deepCopy(maze);
+    for (const step of path) {
+      _maze[step.x][step.y] = value;
+    }
+    return _maze;
+  }
+
+  /**
+   * Sets all the cells on a path to be highlights
+   * @param {Array<Array<string>>} maze
+   * @param {Array<Point>} path
+   */
+  static mazeWithHighlightedPath(maze, path) {
+    return this._mazeWithValueOnPath(maze, path, MAZE_CELL.PATH);
+  }
+
+  /**
+   * Sets all the cells on a path to FREE
+   * @param {Array<Array<string>>} maze
+   * @param {Array<Point>} path
+   */
+  static mazeWithClearedHighlightedPath(maze, path) {
+    return this._mazeWithValueOnPath(maze, path, MAZE_CELL.FREE);
   }
 }

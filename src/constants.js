@@ -1,6 +1,7 @@
 export const MAZE_CELL = {
   WALL: '#',
   FREE: ' ',
+  PATH: '@',
   PLAYER: {
     UP: '^',
     DOWN: 'v',

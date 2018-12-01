@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
+import { MAZE_CELL } from '../Constants';
 
 class MazeCell extends React.Component {
   cssClass() {
     const classes = ['maze-cell'];
     switch (this.props.value) {
-      case ' ':
+      case MAZE_CELL.FREE:
         classes.push('free');
         break;
-      case '#':
+      case MAZE_CELL.WALL:
         classes.push('wall');
+        break;
+      case MAZE_CELL.PATH:
+        classes.push('highlight');
         break;
       default:
         classes.push('player');
@@ -21,18 +25,14 @@ class MazeCell extends React.Component {
 
   playerIcon() {
     switch (this.props.value) {
-      case '<':
+      case MAZE_CELL.PLAYER.LEFT:
         return <Icon name="chevron left" size="big" />;
-      // return <FontAwesomeIcon icon={faAngleLeft} />;
-      case '>':
+      case MAZE_CELL.PLAYER.RIGHT:
         return <Icon name="chevron right" size="big" />;
-      // return <FontAwesomeIcon icon={faAngleRight} />;
-      case '^':
+      case MAZE_CELL.PLAYER.UP:
         return <Icon name="chevron up" size="big" />;
-      // return <FontAwesomeIcon icon={faAngleUp} />;
-      case 'v':
+      case MAZE_CELL.PLAYER.DOWN:
         return <Icon name="chevron down" size="big" />;
-      // return <FontAwesomeIcon icon={faAngleDown} />;
       default:
         return null;
     }

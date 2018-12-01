@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container, Divider, Message } from 'semantic-ui-react';
+import { Button, Container, Divider, Icon, Label, Message } from 'semantic-ui-react';
 import MazeCell from './MazeCell';
 import Point from '../models/Point';
 import StackItem from '../models/StackItem';
-import { MAZE_CELL } from '../constants';
-import Util from '../util';
+import { MAZE_CELL } from '../Constants';
+import Util from '../Util';
 
 class Maze extends React.Component {
   constructor(props) {
@@ -47,15 +47,26 @@ class Maze extends React.Component {
     this.setState(prevState => {
       let stillSolved = false;
       let newSolution = [];
+      let newMaze = Util.mazeWithUpdatedPlayerState(
+        prevState.maze,
+        prevState.player,
+        newPlayerState
+      );
       if (newPlayerState.location.equals(prevState.player.location)) {
-        stillSolved = true;
+        stillSolved = prevState.solved;
         newSolution = prevState.solution;
-      } else if (prevState.solution && newPlayerState.location.equals(prevState.solution[0])) {
-        stillSolved = true;
-        newSolution = prevState.solution.slice(1);
+      } else if (prevState.solution) {
+        if (newPlayerState.location.equals(prevState.solution[0])) {
+          stillSolved = true;
+          newSolution = prevState.solution.slice(1);
+        } else {
+          stillSolved = false;
+          newSolution = null;
+          newMaze = Util.mazeWithClearedHighlightedPath(newMaze, prevState.solution);
+        }
       }
       return {
-        maze: Util.mazeWithUpdatedPlayerState(prevState.maze, prevState.player, newPlayerState),
+        maze: newMaze,
         player: newPlayerState,
         solved: stillSolved,
         solution: newSolution,
@@ -162,10 +173,11 @@ class Maze extends React.Component {
         error: 'There is no way out :(',
       });
     } else {
-      this.setState({
+      this.setState(prevState => ({
         solved: true,
         solution: path,
-      });
+        maze: Util.mazeWithHighlightedPath(prevState.maze, path),
+      }));
     }
   }
 
@@ -180,21 +192,52 @@ class Maze extends React.Component {
     if (!this.state.solved) {
       return null;
     }
-    return <Message info>{Util.pathDirections(this.state.solution, this.state.player)}</Message>;
+    return (
+      <Message
+        floating
+        size="big"
+        header="Directions"
+        content={Util.pathDirections(this.state.solution, this.state.player)}
+      />
+    );
+  }
+
+  static renderControls() {
+    return (
+      <Container className="controls-container" textAlign="center">
+        <Label>
+          <Icon size="big" name="arrow alternate circle up" />
+          Move forward
+        </Label>
+        <Label>
+          <Icon size="big" name="arrow alternate circle left" />
+          Rotate left
+        </Label>
+        <Label>
+          <Icon size="big" name="arrow alternate circle right" />
+          Rotate right
+        </Label>
+        <Label>
+          <Icon size="big" name="arrow alternate circle down" />
+          Rotate 180 degrees
+        </Label>
+      </Container>
+    );
   }
 
   render() {
     return (
       <Container>
+        <Container textAlign="center">{Maze.renderControls()}</Container>
         <Container>{this.state.maze.map((row, i) => Maze.renderRow(row, i))}</Container>
         <Divider hidden />
-        <Container>
-          <Button onClick={this.handleSolveMaze} disabled={this.state.solved}>
+        <Container textAlign="center">
+          <Button primary onClick={this.handleSolveMaze} disabled={this.state.solved}>
             Solve maze
           </Button>
+          {this.renderSolution()}
+          {this.renderError()}
         </Container>
-        {this.renderSolution()}
-        {this.renderError()}
       </Container>
     );
   }
