@@ -1,5 +1,8 @@
 .maze-cell {
-  width: 50px;
+  flex-basis: 0;
+  flex-grow: 1;
+  height: auto;
+  max-width: 3vh;
 }
 
 .controls-container {
@@ -12,7 +15,7 @@
   justify-content: center;
   margin: 0;
   padding: 0;
-  height: 50px;
+  height: 3vh;
 }
 
 .maze-row > .maze-cell {
@@ -39,6 +42,7 @@
 }
 
 .maze-cell.player > i {
-  margin-top: 20%;
+  margin-top: 25%;
   margin-left: 8%;
+  font-size: 1vmax !important;
 }

@@ -26,13 +26,13 @@ class MazeCell extends React.Component {
   playerIcon() {
     switch (this.props.value) {
       case MAZE_CELL.PLAYER.LEFT:
-        return <Icon name="chevron left" size="big" />;
+        return <Icon name="chevron left" />;
       case MAZE_CELL.PLAYER.RIGHT:
-        return <Icon name="chevron right" size="big" />;
+        return <Icon name="chevron right" />;
       case MAZE_CELL.PLAYER.UP:
-        return <Icon name="chevron up" size="big" />;
+        return <Icon name="chevron up" />;
       case MAZE_CELL.PLAYER.DOWN:
-        return <Icon name="chevron down" size="big" />;
+        return <Icon name="chevron down" />;
       default:
         return null;
     }
