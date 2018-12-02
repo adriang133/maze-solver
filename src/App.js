@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, Form, Message, Modal, TextArea } from 'semantic-ui-react';
+import { Button, Container, Form, Message, Modal, TextArea, Divider } from 'semantic-ui-react';
 import Maze from './components/Maze';
 import { MAZE_CELL } from './Constants';
 import Util from './Util';
@@ -15,29 +15,6 @@ class App extends React.Component {
       '#  ### # #',
       '#      # #',
       '######## #',
-    ];
-    const mazeString2 = [
-      '#########################################',
-      '#<    #       #     #         # #   #   #',
-      '##### # ##### # ### # # ##### # # # ### #',
-      '# #   #   #   #   #   # #     #   #   # #',
-      '# # # ### # ########### # ####### # # # #',
-      '#   #   # # #       #   # #   #   # #   #',
-      '####### # # # ##### # ### # # # #########',
-      '#   #     # #     # #   #   # # #       #',
-      '# # ####### ### ### ##### ### # ####### #',
-      '# #             #   #     #   #   #   # #',
-      '# ############### ### ##### ##### # # # #',
-      '#               #     #   #   #   # #   #',
-      '##### ####### # ######### # # # ### #####',
-      '#   # #   #   # #         # # # #       #',
-      '# # # # # # ### # # ####### # # ### ### #',
-      '# # #   # # #     #   #     # #     #   #',
-      '# # ##### # # ####### # ##### ####### # #',
-      '# #     # # # #   # # #     # #       # #',
-      '# ##### ### # ### # # ##### # # ### ### #',
-      '#     #     #     #   #     #   #   #    ',
-      '#########################################',
     ];
 
     return App.parseMaze(mazeString);
@@ -145,10 +122,12 @@ class App extends React.Component {
   render() {
     return (
       <Container textAlign="center">
-        <Button basic color="blue" onClick={() => this.setState({ loadMazeModalOpen: true })}>
+        <Divider horizontal />
+        <Button color="blue" onClick={() => this.setState({ loadMazeModalOpen: true })}>
           Load maze
         </Button>
         {this.renderModal()}
+        <Divider />
         <Maze key={this.state.maze} maze={this.state.maze || App.demoMaze()} />
       </Container>
     );

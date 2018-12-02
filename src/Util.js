@@ -168,6 +168,24 @@ export default class Util {
   }
 
   /**
+   * Gets compact pact directions, eg replacing FFF with F(3)
+   * @param {Array<Point>} path
+   * @param {PlayerState} playerState
+   */
+  static compactPathDirections(path, playerState) {
+    const pathDirections = Util.pathDirections(path, playerState);
+    const compact = [];
+    for (const step of pathDirections) {
+      if (compact.length > 0 && compact[compact.length - 1].value === step) {
+        compact[compact.length - 1].count += 1;
+      } else {
+        compact.push({ value: step, count: 1 });
+      }
+    }
+    return compact;
+  }
+
+  /**
    * Sets all the cells on a path to a certain value
    * @param {Array<Array<string>>} maze
    * @param {Array<Point>} path

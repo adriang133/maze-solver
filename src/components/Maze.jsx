@@ -192,16 +192,36 @@ class Maze extends React.Component {
     if (!this.state.solved) {
       return null;
     }
+    const directions = Util.compactPathDirections(this.state.solution, this.state.player);
     return (
       <Modal size="large" trigger={<Button>View directions</Button>}>
-        <Modal.Header>Maze solution directions</Modal.Header>
+        <Modal.Header>
+          Maze solution directions
+          {'   '}
+          <Label>
+            F<Label.Detail>Move forward</Label.Detail>
+          </Label>
+          <Label>
+            L<Label.Detail>Rotate left</Label.Detail>
+          </Label>
+          <Label>
+            R<Label.Detail>Rotate right</Label.Detail>
+          </Label>
+          <Label>
+            B<Label.Detail>Rotate 180°</Label.Detail>
+          </Label>
+        </Modal.Header>
         <Modal.Content>
-          <Message>
-            Directions to closest exit. <b>F</b> move forward <b>L</b>/<b>R</b> rotate left/right
-            <b>B</b> rotate 180 degrees
-          </Message>
-
-          {Util.pathDirections(this.state.solution, this.state.player)}
+          <Button labelPosition="right">
+            <Label basic color="blue">
+              {directions[0].value}({directions[0].count})
+            </Label>
+            {directions.slice(1).map(step => (
+              <Label basic color="blue" pointing="left">
+                {step.value}({step.count})
+              </Label>
+            ))}
+          </Button>
         </Modal.Content>
       </Modal>
     );
@@ -237,9 +257,11 @@ class Maze extends React.Component {
         <Container>{this.state.maze.map((row, i) => Maze.renderRow(row, i))}</Container>
         <Divider hidden />
         <Container textAlign="center">
-          <Button basic color="green" onClick={this.handleSolveMaze} disabled={this.state.solved}>
-            Solve maze
-          </Button>
+          {!this.state.solved && (
+            <Button color="green" onClick={this.handleSolveMaze}>
+              Solve maze
+            </Button>
+          )}
           {this.renderSolutionModal()}
           {this.renderError()}
         </Container>
