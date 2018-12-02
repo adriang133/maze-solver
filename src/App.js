@@ -60,7 +60,7 @@ class App extends React.Component {
       mazeInput: null,
       mazeInputError: null,
       maze: null,
-      loadMazeModalOpen: true,
+      loadMazeModalOpen: false,
     };
 
     this.onChange = this.onChange.bind(this);

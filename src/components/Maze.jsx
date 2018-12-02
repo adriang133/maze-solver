@@ -244,7 +244,7 @@ class Maze extends React.Component {
         </Label>
         <Label>
           <Icon name="arrow alternate circle down" />
-          <Label.Detail>Rotate 180 degrees</Label.Detail>
+          <Label.Detail>Rotate 180°</Label.Detail>
         </Label>
       </Container>
     );
