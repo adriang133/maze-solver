@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Container, Divider, Icon, Label, Message } from 'semantic-ui-react';
+import { Button, Container, Divider, Icon, Label, Message, Modal } from 'semantic-ui-react';
 import MazeCell from './MazeCell';
 import Point from '../models/Point';
 import StackItem from '../models/StackItem';
@@ -22,7 +22,7 @@ class Maze extends React.Component {
     this.solveMaze = this.solveMaze.bind(this);
     this.handleSolveMaze = this.handleSolveMaze.bind(this);
     this.renderError = this.renderError.bind(this);
-    this.renderSolution = this.renderSolution.bind(this);
+    this.renderSolution = this.renderSolutionModal.bind(this);
   }
 
   componentWillMount() {
@@ -188,17 +188,22 @@ class Maze extends React.Component {
     return <Message error>{this.state.error}</Message>;
   }
 
-  renderSolution() {
+  renderSolutionModal() {
     if (!this.state.solved) {
       return null;
     }
     return (
-      <Message
-        floating
-        size="big"
-        header="Directions"
-        content={Util.pathDirections(this.state.solution, this.state.player)}
-      />
+      <Modal size="large" trigger={<Button>View directions</Button>}>
+        <Modal.Header>Maze solution directions</Modal.Header>
+        <Modal.Content>
+          <Message>
+            Directions to closest exit. <b>F</b> move forward <b>L</b>/<b>R</b> rotate left/right
+            <b>B</b> rotate 180 degrees
+          </Message>
+
+          {Util.pathDirections(this.state.solution, this.state.player)}
+        </Modal.Content>
+      </Modal>
     );
   }
 
@@ -206,20 +211,20 @@ class Maze extends React.Component {
     return (
       <Container className="controls-container" textAlign="center">
         <Label>
-          <Icon size="big" name="arrow alternate circle up" />
-          Move forward
+          <Icon name="arrow alternate circle up" />
+          <Label.Detail>Move forward</Label.Detail>
         </Label>
         <Label>
-          <Icon size="big" name="arrow alternate circle left" />
-          Rotate left
+          <Icon name="arrow alternate circle left" />
+          <Label.Detail>Rotate left</Label.Detail>
         </Label>
         <Label>
-          <Icon size="big" name="arrow alternate circle right" />
-          Rotate right
+          <Icon name="arrow alternate circle right" />
+          <Label.Detail>Rotate right</Label.Detail>
         </Label>
         <Label>
-          <Icon size="big" name="arrow alternate circle down" />
-          Rotate 180 degrees
+          <Icon name="arrow alternate circle down" />
+          <Label.Detail>Rotate 180 degrees</Label.Detail>
         </Label>
       </Container>
     );
@@ -232,10 +237,10 @@ class Maze extends React.Component {
         <Container>{this.state.maze.map((row, i) => Maze.renderRow(row, i))}</Container>
         <Divider hidden />
         <Container textAlign="center">
-          <Button primary onClick={this.handleSolveMaze} disabled={this.state.solved}>
+          <Button basic color="green" onClick={this.handleSolveMaze} disabled={this.state.solved}>
             Solve maze
           </Button>
-          {this.renderSolution()}
+          {this.renderSolutionModal()}
           {this.renderError()}
         </Container>
       </Container>

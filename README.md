@@ -5,7 +5,7 @@ The input format is stolen from [Escape the maze](https://www.codewars.com/kata/
 
 `' '` is some walkable space
 
-`'#'` is a thorn bush
+`'#'` is a wall
 
 `'^'`, `'<'`, `'v'` or `'>'` is your position and orientation in the maze; up, left, down, right respectively
 

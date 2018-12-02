@@ -24,6 +24,13 @@ export default class Util {
     a = tmp;
   }
 
+  static isIterable(obj) {
+    if (obj == null) {
+      return false;
+    }
+    return typeof obj[Symbol.iterator] === 'function';
+  }
+
   /**
    * Deep copies an object by serializing and deserializing it
    * @param {Object} obj
