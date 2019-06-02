@@ -1,5 +1,12 @@
 export default class Point {
-  constructor(public x: number, public y: number) {}
+  public x: number;
+
+  public y: number;
+
+  public constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 
   public left(): Point {
     return new Point(this.x, this.y - 1);

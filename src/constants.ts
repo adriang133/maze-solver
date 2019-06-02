@@ -1,4 +1,5 @@
 export enum MazeCell {
+  None,
   Wall,
   Free,
   PlayerUp,
@@ -8,8 +9,8 @@ export enum MazeCell {
 }
 
 export enum Move {
-  Forward = "F",
-  RotateLeft = "L",
-  RotateRight = "R",
-  RotateBack = "B"
+  Forward = 'F',
+  RotateLeft = 'L',
+  RotateRight = 'R',
+  RotateBack = 'B'
 }
